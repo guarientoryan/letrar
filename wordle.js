@@ -116,6 +116,9 @@ function intialize() {
 
   shareContainer.appendChild(shareButton);
   document.body.appendChild(shareContainer);
+
+  // Restaura o progresso salvo (se for do mesmo dia)
+  loadState();
 }
 function processKey() {
   let e = { code: this.id };
@@ -156,6 +159,8 @@ function processInput(e) {
     document.getElementById("answer").innerText = word;
     endGame();
   }
+
+  saveState();
 }
 
 function update() {
@@ -301,5 +306,87 @@ function shareResult() {
       });
   } else {
     prompt("Copie seu resultado:", text);
+  }
+}
+
+const STORAGE_KEY = "letrar-state";
+
+function saveState() {
+  let tiles = [];
+  for (let r = 0; r < height; r++) {
+    for (let c = 0; c < width; c++) {
+      let tile = document.getElementById(r + "-" + c);
+      tiles.push({ text: tile.innerText, cls: tile.className });
+    }
+  }
+
+  let keys = {};
+  document.querySelectorAll(".key-tile, .enter-key-tile").forEach((k) => {
+    if (k.id) keys[k.id] = k.className;
+  });
+
+  let state = {
+    day: dayNumber,
+    row: row,
+    col: col,
+    gameOver: gameOver,
+    won: won,
+    results: results,
+    tiles: tiles,
+    keys: keys,
+    answerShown: document.getElementById("answer").innerText,
+  };
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    // localStorage indisponível (modo privado, etc) - sem problema, só não persiste
+  }
+}
+
+function loadState() {
+  let raw;
+  try {
+    raw = localStorage.getItem(STORAGE_KEY);
+  } catch (e) {
+    return;
+  }
+  if (!raw) return;
+
+  let state;
+  try {
+    state = JSON.parse(raw);
+  } catch (e) {
+    return;
+  }
+
+  // progresso de um dia diferente (a palavra já mudou) - ignora
+  if (state.day !== dayNumber) return;
+
+  row = state.row;
+  col = state.col;
+  gameOver = state.gameOver;
+  won = state.won;
+  results = state.results || [];
+
+  state.tiles.forEach((t, i) => {
+    let r = Math.floor(i / width);
+    let c = i % width;
+    let tile = document.getElementById(r + "-" + c);
+    tile.innerText = t.text;
+    tile.className = t.cls;
+  });
+
+  Object.keys(state.keys).forEach((id) => {
+    let el = document.getElementById(id);
+    if (el) el.className = state.keys[id];
+  });
+
+  if (state.answerShown) {
+    document.getElementById("answer").innerText = state.answerShown;
+  }
+
+  if (gameOver) {
+    endGame();
   }
 }

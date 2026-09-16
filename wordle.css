@@ -36,7 +36,7 @@ hr {
 
 #board {
     width: 100%;
-    max-width: 370px;
+    max-width: 360px;
     height: 370px;
     background-color: #121213;
     margin: 0 auto;
@@ -96,14 +96,26 @@ hr {
     border-color: rgb(68, 68, 68) !important;
 }
 
+#keyboard-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #121213;
+    padding-bottom: 10px;
+}
+
 
 .keyboard-row {
     display: flex;
+    max-width: 400px;
     justify-content: center;
-    width: 400px;
     margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .key-tile {
@@ -111,7 +123,7 @@ hr {
     background-color:rgb(134, 132, 132);
     border: 1px solid rgb(134, 132, 132);
     border-radius: 4px;
-    width: 36px;
+    width: clamp(24px, 8vw,36px);
     height: 40px;
     margin: 2px;
 

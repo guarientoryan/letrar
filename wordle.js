@@ -70,6 +70,9 @@ function intialize() {
     ["Enter", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
   ];
 
+  let keyboardContainer = document.createElement("div"); 
+  keyboardContainer.id = "keyboard-container";          
+
   for (let i = 0; i < keyboard.length; i++) {
     let currRow = keyboard[i];
     let keyboardRow = document.createElement("div");
@@ -78,7 +81,7 @@ function intialize() {
     for (let j = 0; j < currRow.length; j++) {
       let keyTile = document.createElement("div");
 
-      let key = currRow[j];
+      let key = currRow[j]; 
       keyTile.innerText = key;
       if (key == "Enter") {
         keyTile.id = "Enter";
@@ -97,8 +100,10 @@ function intialize() {
       }
       keyboardRow.appendChild(keyTile);
     }
-    document.body.appendChild(keyboardRow);
+    keyboardContainer.appendChild(keyboardRow);
   }
+
+   document.body.appendChild(keyboardContainer);
 
   // Captura de Tecla
   document.addEventListener("keydown", (e) => {

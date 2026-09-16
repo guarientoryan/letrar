@@ -113,6 +113,13 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    /* Impede seleção de texto ao clicar */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
 }
 
 .enter-key-tile {
@@ -132,4 +139,11 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    /* Impede seleção de texto ao clicar */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
 }

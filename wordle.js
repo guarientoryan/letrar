@@ -6,6 +6,9 @@
     var col = 0; //letra atual para essa tentativa
 
     var gameOver = false;
+    var won = false; // se o jogador acertou a palavra
+    var dayNumber = null; // número do dia do jogo, usado no texto de compartilhamento
+    var results = []; // uma string de emojis (🟩🟨⬛) por tentativa já feita
 
     function getWordOfTheDay(wordList) {
   const epoch = new Date(2024, 0, 1); // dia 0 do seu jogo - pode ser qualquer data fixa
@@ -226,4 +229,68 @@ var word = getWordOfTheDay(wordList);
 
         row += 1; //começar nova linha
         col = 0; // começar do 0 para uma nova linha
+
+        // Monta a linha de emojis dessa tentativa (🟩🟨⬛) pra usar no compartilhamento
+  let emojiRow = "";
+  for (let c = 0; c < width; c++) {
+    let currTile = document.getElementById(row.toString() + "-" + c.toString());
+    if (currTile.classList.contains("correct")) {
+      emojiRow += "🟩";
+    } else if (currTile.classList.contains("present")) {
+      emojiRow += "🟨";
+    } else {
+      emojiRow += "⬛";
     }
+  }
+  results.push(emojiRow);
+ 
+  row += 1; //começar nova linha
+  col = 0; // começar do 0 para uma nova linha
+ 
+  if (won) {
+    endGame();
+  }
+}
+ 
+function endGame() {
+  document.getElementById("share-container").classList.add("visible");
+}
+ 
+function shareResult() {
+  let attempts = won ? results.length : "X";
+  let title =
+    "Letrar" +
+    (dayNumber !== null ? " #" + dayNumber : "") +
+    " " +
+    attempts +
+    "/" +
+    height;
+  let text =
+    title + "\n\n" + results.join("\n") + "\n\n" + window.location.href;
+ 
+  let shareButton = document.getElementById("share-button");
+ 
+  if (navigator.share) {
+    navigator.share({ text: text }).catch(() => {});
+    return;
+  }
+ 
+  if (navigator.clipboard) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        let original = shareButton.innerText;
+        shareButton.innerText = "Copiado!";
+        setTimeout(() => {
+          shareButton.innerText = original;
+        }, 2000);
+      })
+      .catch(() => {
+        prompt("Copie seu resultado:", text);
+      });
+  } else {
+    prompt("Copie seu resultado:", text);
+  }
+}
+ 
+    

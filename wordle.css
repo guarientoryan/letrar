@@ -192,6 +192,12 @@ hr {
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    /* Impede seleção de texto ao clicar */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
 }
  
 #share-button:hover {

@@ -1,7 +1,12 @@
 * {
+    touch-action: manipulation;
     box-sizing: border-box; /* Crucial para o cálculo de tamanho */
     margin: 0px;
     padding: 0px;
+}
+
+html {
+    touch-action: manipulation;
 }
 
 body {
@@ -28,6 +33,13 @@ body {
     color: white;
     margin-top: 20px;
     margin-bottom: 10px;
+    touch-action: manipulation;
+     /* Impede seleção de texto ao clicar */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
 }
 
 hr {
@@ -67,6 +79,12 @@ hr {
     border: 2px solid rgb(68, 68, 68);
     width: 55px;
     height: 55px;
+     /* Impede seleção de texto ao clicar */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
     
 
     /* Text */
@@ -76,14 +94,6 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* Impede seleção de texto ao clicar */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: pointer;
-
 }
 
 .correct {
@@ -170,6 +180,8 @@ hr {
 }
  
 #share-button {
+    z-index: 1000;
+    position:fixed;
     background-color: rgb(71, 145, 71);
     color: white;
     border: none;
